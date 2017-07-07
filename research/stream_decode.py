@@ -50,8 +50,9 @@ def crypto(payload):
 
 def crc_check(payload):
     crc = binascii.crc32(payload[42:]) & 0xFFFFFFFF
+    crc = "{0:#0{1}x}".format(crc, 10)
     data_crc = '0x' + binascii.hexlify(payload[6:10]).decode('utf-8')
-    return (data_crc, hex(crc), data_crc == hex(crc))
+    return (data_crc, crc, data_crc == crc)
 
 with open(sys.argv[1], 'rb') as f:
     packets = yaml.load(f, Loader=yamlordereddictloader.Loader)
