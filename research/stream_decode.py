@@ -63,7 +63,7 @@ with open(sys.argv[1], 'rb') as f:
             print("Server sends")
 
         print("Magic: {}".format(v[0:2]))
-        print("Length: {}".format(v[2:4]))
+        print("Length: {} ({})".format(struct.unpack(">H", v[2:4])[0], struct.unpack(">H", v[2:4])[0] == len(v)))
         print("Type: {}".format(v[4:6]))
         print("CRC32: {}".format(crc_check(v)))
         print("id: {}".format(v[10:42]))
