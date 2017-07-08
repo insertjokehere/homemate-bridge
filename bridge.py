@@ -66,8 +66,29 @@ class HomematePacket:
         return json.loads(unpad.decode('utf-8'))
 
     @classmethod
+    def encrypt_payload(self, key, payload):
+        data = json.dumps(payload).encode('utf-8')
+
+        padder = padding.PKCS7(128).padder()
+        padded_data = padder.update(data)
+        padded_data += padder.finalize()
+
+        encryptor = Cipher(
+            algorithms.AES(key),
+            modes.ECB(),
+            backend=default_backend()
+        ).encryptor()
+
+        encrypted_payload = encryptor.update(data)
+        return encrypted_payload
+
+    @classmethod
     def build_packet(cls, packet_type, key, switch_id, payload):
-        return
+        encrypted_payload = cls.encrypt_payload(key, payload)
+        crc = struct.pack('>I', binascii.crc32(encrypted_payload) & 0xFFFFFFFF)
+        length = struct.pack('>H', len(encrypted_payload))
+
+        return MAGIC + length + packet_type + crc + switch_id + encrypted_payload
 
 
 class HomemateTCPHandler(socketserver.BaseRequestHandler):
