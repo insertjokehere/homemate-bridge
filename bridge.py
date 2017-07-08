@@ -121,6 +121,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self.language = None
         self.modelId = None
         self._switch_on = None
+        self.serial = 0
+        self.uid = None
 
         super().__init__(*args, **kwargs)
 
@@ -132,6 +134,36 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def switch_on(self, value):
         print("New switch state: {}".format(value))
         self._switch_on = value
+
+    def order_state_change(self, new_state):
+        payload = {
+            "userName": "noone@example.com",
+            "uid": self.uid,
+            "value1": 0 if self.switch_on else 1,
+            "value2": 0,
+            "value3": 0,
+            "value4": 0,
+            "defaultResponse": 1,
+            "ver": "2.4.0",
+            "qualityOfService": 1,
+            "delayTime": 0,
+            "cmd": 15,
+            "deviceId": self.switch_id.decode("utf-8"),
+            "clientSessionId": self.switch_id.decode("utf-8"),
+            "order": 'on' if new_state else 'off',
+            "serial": self.serial
+        }
+
+        self.serial += 1
+
+        packet = HomematePacket.build_packet(
+            packet_type=bytes([0x64, 0x6b]),
+            key=self.keys[0x64],
+            switch_id=self.switch_id,
+            payload=payload
+        )
+
+        self.request.sendall(packet)
 
     def handle(self):
         # self.request is the TCP socket connected to the client
@@ -182,6 +214,9 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 #HomematePacket(response_packet, self.keys)
                 self.request.sendall(response_packet)
 
+            if packet.json_payload['cmd'] == 32:
+                self.order_state_change(not self.switch_on)
+
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
         response_payload['serial'] = packet.json_payload['serial']
@@ -215,6 +250,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         return {}
 
     def handle_heartbeat(self, packet):
+        self.uid = packet.json_payload['uid']
         return {
             'utc': int(time.time())
         }
