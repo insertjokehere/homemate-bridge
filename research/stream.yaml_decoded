@@ -1,488 +1,488 @@
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'pk'
-CRC32: ('0x221c999c', '0x221c999c', True)
+CRC32: (572299676, 572299676, True)
 id: b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-{'cmd': 0, 'softwareVersion': 'v2.0.6', 'hardwareVersion': 'v1.0.0', 'language': 'chinese', 'serial': 1, 'modelId': '56d124ba95474fc98aafdb830e933789'}
+{'cmd': 0, 'serial': 1, 'softwareVersion': 'v2.0.6', 'modelId': '56d124ba95474fc98aafdb830e933789', 'language': 'chinese', 'hardwareVersion': 'v1.0.0'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00j'
+Length: 106 (True)
 Type: b'pk'
-CRC32: ('0xeac4bd37', '0xeac4bd37', True)
+CRC32: (3938762039, 3938762039, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 0, 'serial': 1, 'key': 'a2V8NZ9Jo4K029K9', 'status': 0}
+{'key': 'a2V8NZ9Jo4K029K9', 'cmd': 0, 'status': 0, 'serial': 1}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x035d8afc', '0x035d8afc', True)
+CRC32: (56462076, 56462076, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 6, 'localPort': 8000, 'password': 'AAD5E66240FCB8FFF676E7E1856BD89F', 'localIp': '10.42.0.35', 'serial': 2, 'uid': '5ccf7ff3f50c'}
+{'cmd': 6, 'serial': 2, 'localPort': 8000, 'localIp': '10.42.0.35', 'password': 'AAD5E66240FCB8FFF676E7E1856BD89F', 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00J'
+Length: 74 (True)
 Type: b'dk'
-CRC32: ('0xbdba25e8', '0xbdba25e8', True)
+CRC32: (3183093224, 3183093224, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 6, 'serial': 2, 'status': 0}
+{'cmd': 6, 'status': 0, 'serial': 2}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0xa477518a', '0xa477518a', True)
+CRC32: (2759283082, 2759283082, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 3, 'deviceId': '0', 'value1': 0, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 3, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x47fbc219', '0x47fbc219', True)
+CRC32: (1207681561, 1207681561, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 4}
+{'cmd': 32, 'serial': 4, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x2f755793', '0x2f755793', True)
+CRC32: (796219283, 796219283, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499396909, 'cmd': 32, 'status': 0, 'serial': 4, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 4, 'utc': 1499396909, 'status': 0}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0x8fdcc902', '0x8fdcc902', True)
+CRC32: (2413611266, 2413611266, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'defaultResponse': 1, 'order': 'off', 'value1': 1, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 774662985, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'off', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 1, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 774662985, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0x879dee93', '0x879dee93', True)
+CRC32: (2275274387, 2275274387, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'uid': '5ccf7ff3f50c', 'serial': 774662985}
+{'cmd': 15, 'serial': 774662985, 'uid': '5ccf7ff3f50c', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x856efe54', '0x856efe54', True)
+CRC32: (2238643796, 2238643796, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 5, 'deviceId': '0', 'value1': 1, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 5, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 1}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0xbceec31d', '0xbceec31d', True)
+CRC32: (3169764125, 3169764125, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'defaultResponse': 1, 'order': 'on', 'value1': 0, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 1305484922, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'on', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 0, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 1305484922, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0xdc49d793', '0xdc49d793', True)
+CRC32: (3695826835, 3695826835, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'uid': '5ccf7ff3f50c', 'serial': 1305484922}
+{'cmd': 15, 'serial': 1305484922, 'uid': '5ccf7ff3f50c', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x98b6576a', '0x98b6576a', True)
+CRC32: (2562086762, 2562086762, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 6, 'deviceId': '0', 'value1': 0, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 6, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 0}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0xf4eb8d16', '0xf4eb8d16', True)
+CRC32: (4109077782, 4109077782, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'defaultResponse': 1, 'order': 'off', 'value1': 1, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 658514077, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'off', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 1, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 658514077, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0xaf343d3f', '0xaf343d3f', True)
+CRC32: (2939436351, 2939436351, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'uid': '5ccf7ff3f50c', 'serial': 658514077}
+{'cmd': 15, 'serial': 658514077, 'uid': '5ccf7ff3f50c', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x31f1347a', '0x31f1347a', True)
+CRC32: (837891194, 837891194, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 7, 'deviceId': '0', 'value1': 1, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 7, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 1}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0x8fcae9a4', '0x8fcae9a4', True)
+CRC32: (2412439972, 2412439972, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'defaultResponse': 1, 'order': 'on', 'value1': 0, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 1941085374, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'on', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 0, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 1941085374, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0x25b4aab1', '0x25b4aab1', True)
+CRC32: (632597169, 632597169, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'uid': '5ccf7ff3f50c', 'serial': 1941085374}
+{'cmd': 15, 'serial': 1941085374, 'uid': '5ccf7ff3f50c', 'clientSessionId': 'dc27a080357449f3ab641a232b72bc63', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0xaf4ca485', '0xaf4ca485', True)
+CRC32: (2941035653, 2941035653, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 8, 'deviceId': '0', 'value1': 0, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 8, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x6c5c78d5', '0x6c5c78d5', True)
+CRC32: (1817999573, 1817999573, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 124, 'uid': '5ccf7ff3f50c', 'serial': 9}
+{'cmd': 124, 'serial': 9, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00\xda'
+Length: 218 (True)
 Type: b'dk'
-CRC32: ('0xdcce1f3b', '0xdcce1f3b', True)
+CRC32: (3704495931, 3704495931, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 124, 'zoneYear': 2017, 'zoneDst': 3600, 'uid': '5ccf7ff3f50c', 'serial': 9, 'dstStartTime': 1506175200, 'errorMessage': '', 'dstEndTime': 1491055200, 'zoneOffset': 43200, 'status': 0}
+{'errorMessage': '', 'cmd': 124, 'uid': '5ccf7ff3f50c', 'dstEndTime': 1491055200, 'serial': 9, 'dstStartTime': 1506175200, 'status': 0, 'zoneYear': 2017, 'zoneDst': 3600, 'zoneOffset': 43200}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x7c0adc82', '0x7c0adc82', True)
+CRC32: (2081086594, 2081086594, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 10}
+{'cmd': 32, 'serial': 10, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x47d0ebc0', '0x47d0ebc0', True)
+CRC32: (1204874176, 1204874176, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397030, 'cmd': 32, 'status': 0, 'serial': 10, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 10, 'utc': 1499397030, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x0418cf03', '0x0418cf03', True)
+CRC32: (68734723, 68734723, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 11}
+{'cmd': 32, 'serial': 11, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x63d39f54', '0x63d39f54', True)
+CRC32: (1674813268, 1674813268, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397150, 'cmd': 32, 'status': 0, 'serial': 11, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 11, 'utc': 1499397150, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x82e38491', '0x82e38491', True)
+CRC32: (2195948689, 2195948689, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 12}
+{'cmd': 32, 'serial': 12, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x3ee632de', '0x3ee632de', True)
+CRC32: (1055273694, 1055273694, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397271, 'cmd': 32, 'status': 0, 'serial': 12, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 12, 'utc': 1499397271, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x71721ae6', '0x71721ae6', True)
+CRC32: (1903303398, 1903303398, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 13}
+{'cmd': 32, 'serial': 13, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0xd2dbd5ea', '0xd2dbd5ea', True)
+CRC32: (3537622506, 3537622506, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397391, 'cmd': 32, 'status': 0, 'serial': 13, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 13, 'utc': 1499397391, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xcee43a76', '0xcee43a76', True)
+CRC32: (3471063670, 3471063670, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 14}
+{'cmd': 32, 'serial': 14, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0xf9b12b05', '0xf9b12b05', True)
+CRC32: (4189137669, 4189137669, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397511, 'cmd': 32, 'status': 0, 'serial': 14, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 14, 'utc': 1499397511, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xde62994c', '0xde62994c', True)
+CRC32: (3731003724, 3731003724, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 15}
+{'cmd': 32, 'serial': 15, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x7b03b66d', '0x7b03b66d', True)
+CRC32: (2063840877, 2063840877, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397631, 'cmd': 32, 'status': 0, 'serial': 15, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 15, 'utc': 1499397631, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xa016a7e3', '0xa016a7e3', True)
+CRC32: (2685839331, 2685839331, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 16}
+{'cmd': 32, 'serial': 16, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x0bfeaa39', '0x0bfeaa39', True)
+CRC32: (201239097, 201239097, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397752, 'cmd': 32, 'status': 0, 'serial': 16, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 16, 'utc': 1499397752, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x79123586', '0x79123586', True)
+CRC32: (2031236486, 2031236486, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 17}
+{'cmd': 32, 'serial': 17, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x3b24e2d4', '0x3b24e2d4', True)
+CRC32: (992273108, 992273108, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397872, 'cmd': 32, 'status': 0, 'serial': 17, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 17, 'utc': 1499397872, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xa69cbf29', '0xa69cbf29', True)
+CRC32: (2795290409, 2795290409, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 18}
+{'cmd': 32, 'serial': 18, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x74a6116f', '0x74a6116f', True)
+CRC32: (1957040495, 1957040495, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499397993, 'cmd': 32, 'status': 0, 'serial': 18, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 18, 'utc': 1499397993, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xd1556502', '0xd1556502', True)
+CRC32: (3512034562, 3512034562, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 19}
+{'cmd': 32, 'serial': 19, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0xf0c76955', '0xf0c76955', True)
+CRC32: (4039600469, 4039600469, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499398113, 'cmd': 32, 'status': 0, 'serial': 19, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 19, 'utc': 1499398113, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xe434485c', '0xe434485c', True)
+CRC32: (3828631644, 3828631644, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 20}
+{'cmd': 32, 'serial': 20, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x4501d114', '0x4501d114', True)
+CRC32: (1157746964, 1157746964, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499398233, 'cmd': 32, 'status': 0, 'serial': 20, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 20, 'utc': 1499398233, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0xf3a131de', '0xf3a131de', True)
+CRC32: (4087427550, 4087427550, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 21}
+{'cmd': 32, 'serial': 21, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0xba7c806c', '0xba7c806c', True)
+CRC32: (3128721516, 3128721516, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499398354, 'cmd': 32, 'status': 0, 'serial': 21, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 21, 'utc': 1499398354, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x1247496e', '0x1247496e', True)
+CRC32: (306661742, 306661742, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 22}
+{'cmd': 32, 'serial': 22, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x4cb0fec2', '0x4cb0fec2', True)
+CRC32: (1286667970, 1286667970, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499398474, 'cmd': 32, 'status': 0, 'serial': 22, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 22, 'utc': 1499398474, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00Z'
+Length: 90 (True)
 Type: b'dk'
-CRC32: ('0x58ac6cad', '0x58ac6cad', True)
+CRC32: (1487695021, 1487695021, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 23}
+{'cmd': 32, 'serial': 23, 'uid': '5ccf7ff3f50c'}
 
 Server sends
 Magic: b'hd'
-Length: b'\x00z'
+Length: 122 (True)
 Type: b'dk'
-CRC32: ('0x0c0a96b8', '0x0c0a96b8', True)
+CRC32: (202020536, 202020536, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'utc': 1499398594, 'cmd': 32, 'status': 0, 'serial': 23, 'uid': '5ccf7ff3f50c'}
+{'cmd': 32, 'uid': '5ccf7ff3f50c', 'serial': 23, 'utc': 1499398594, 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0xf3af6672', '0xf3af6672', True)
+CRC32: (4088358514, 4088358514, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 24, 'deviceId': '0', 'value1': 1, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 24, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 1}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x2e9bb084', '0x2e9bb084', True)
+CRC32: (781955204, 781955204, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 25, 'deviceId': '0', 'value1': 0, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 25, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x4a838d4d', '0x4a838d4d', True)
+CRC32: (1250135373, 1250135373, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 26, 'deviceId': '0', 'value1': 1, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 26, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 1}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0x8f1af96c', '0x8f1af96c', True)
+CRC32: (2400909676, 2400909676, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'defaultResponse': 1, 'order': 'off', 'value1': 1, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 307607727, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'off', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 1, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 307607727, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0xf48a3fca', '0xf48a3fca', True)
+CRC32: (4102701002, 4102701002, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'uid': '5ccf7ff3f50c', 'serial': 307607727}
+{'cmd': 15, 'serial': 307607727, 'uid': '5ccf7ff3f50c', 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x83d1f0e5', '0x83d1f0e5', True)
+CRC32: (2211573989, 2211573989, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 27, 'deviceId': '0', 'value1': 1, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 27, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 1}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0xeeb69318', '0xeeb69318', True)
+CRC32: (4004942616, 4004942616, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'defaultResponse': 1, 'order': 'on', 'value1': 0, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 1275143212, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'on', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 0, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 1275143212, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0xf7cb824f', '0xf7cb824f', True)
+CRC32: (4157309519, 4157309519, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'uid': '5ccf7ff3f50c', 'serial': 1275143212}
+{'cmd': 15, 'serial': 1275143212, 'uid': '5ccf7ff3f50c', 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0xd57b5199', '0xd57b5199', True)
+CRC32: (3581628825, 3581628825, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 28, 'deviceId': '0', 'value1': 0, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 28, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 0}
 
 Server sends
 Magic: b'hd'
-Length: b'\x01j'
+Length: 362 (True)
 Type: b'dk'
-CRC32: ('0xb898578b', '0xb898578b', True)
+CRC32: (3096991627, 3096991627, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 15, 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'defaultResponse': 1, 'order': 'off', 'value1': 1, 'value3': 0, 'qualityOfService': 1, 'delayTime': 0, 'value2': 0, 'serial': 2125678376, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'ver': '2.4.0', 'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c'}
+{'userName': 'hhomewebcam@gmail.com', 'uid': '5ccf7ff3f50c', 'value4': 0, 'qualityOfService': 1, 'order': 'off', 'delayTime': 0, 'cmd': 15, 'value3': 0, 'value1': 1, 'defaultResponse': 1, 'ver': '2.4.0', 'serial': 2125678376, 'deviceId': 'b67e8673ddd84aa6a2f94f6c14a6c605', 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'value2': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xaa'
+Length: 170 (True)
 Type: b'dk'
-CRC32: ('0x74fe95e9', '0x74fe95e9', True)
+CRC32: (1962841577, 1962841577, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'status': 0, 'cmd': 15, 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'uid': '5ccf7ff3f50c', 'serial': 2125678376}
+{'cmd': 15, 'serial': 2125678376, 'uid': '5ccf7ff3f50c', 'clientSessionId': '8cb8fb17cfef4aafa6c187035d2b2c94', 'status': 0}
 
 Switch sends
 Magic: b'hd'
-Length: b'\x00\xba'
+Length: 186 (True)
 Type: b'dk'
-CRC32: ('0x3d65bbc2', '0x3d65bbc2', True)
+CRC32: (1030077378, 1030077378, True)
 id: b'9d8b078ced13436faf0296e6913619a4'
-{'value4': 0, 'cmd': 42, 'statusType': 0, 'alarmType': 1, 'value2': 0, 'serial': 29, 'deviceId': '0', 'value1': 1, 'value3': 0, 'uid': '5ccf7ff3f50c'}
+{'alarmType': 1, 'cmd': 42, 'serial': 29, 'value4': 0, 'deviceId': '0', 'value2': 0, 'uid': '5ccf7ff3f50c', 'statusType': 0, 'value3': 0, 'value1': 1}
 

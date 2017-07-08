@@ -17,6 +17,7 @@ keys = {
 def load_packet(data):
     if data[-1] == 0x00:
         data = data[:-1]
+    print(data.decode('utf-8'))
     return json.loads(data.decode('utf-8'))
 
 
