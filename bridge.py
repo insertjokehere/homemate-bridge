@@ -6,7 +6,11 @@ import binascii
 import random
 import string
 
+import paho.mqtt.client as mqtt
+
 from hexdump import hexdump
+
+from hassdevice.devices import Switch
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
@@ -22,6 +26,16 @@ ID_UNSET = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
 
 # Commands that the server sends, don't send an ACK when we see the switch ACK
 CMD_SERVER_SENDS = [15]
+
+
+class HomemateSwitch(Switch):
+
+    def __init__(self, handler, *args, **kwargs):
+        self._handler = handler
+        super().__init__(*args, **kwargs)
+
+    def on_state_change(self, new_state):
+        self._handler.order_state_change(new_state == self.payload_on)
 
 
 class HomematePacket:
@@ -110,6 +124,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     client.
     """
 
+    _broker = None
+
     def __init__(self, *args, **kwargs):
         self.switch_id = None
         self.keys = {
@@ -124,6 +140,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self.serial = 0
         self.uid = None
 
+        self._mqtt_switch = None
+
         super().__init__(*args, **kwargs)
 
     @property
@@ -134,6 +152,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def switch_on(self, value):
         print("New switch state: {}".format(value))
         self._switch_on = value
+        if self._mqtt_switch is not None:
+            self._mqtt_switch.state = self._mqtt_switch.payload_on if value else self._mqtt_switch.payload_off
 
     def order_state_change(self, new_state):
         payload = {
@@ -264,7 +284,18 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         else:
             self.switch_on = False
 
-        return None  # No response to this packet
+        return None  # No response to this packetnaughty_jones
+
+    def handle_handshake(self, packet):
+        self._mqtt_switch = HomemateSwitch(
+            self,
+            name="Homemate Switch",
+            entity_id=packet.json_payload['uid']
+        )
+
+        self._mqtt_switch.connect(self.__class__._broker)
+
+        return self.handle_default(packet)
 
     @property
     def cmd_handlers(self):
@@ -274,9 +305,22 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             42: self.handle_state_update
         }
 
+    @classmethod
+    def set_broker(cls, broker):
+        cls._broker = broker
+
 if __name__ == "__main__":
 
     HOST, PORT = "0.0.0.0", 10001
+
+    mqtt_client = mqtt.Client()
+    mqtt_client.connect("localhost", 1883, 60)
+
+    mqtt_client.loop_start()
+
+    HomemateTCPHandler.set_broker(
+        mqtt_client
+    )
 
     # Create the server, binding to localhost on port 9999
     server = socketserver.TCPServer((HOST, PORT), HomemateTCPHandler)
@@ -285,4 +329,7 @@ if __name__ == "__main__":
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    finally:
+        mqtt_client.loop_stop()
