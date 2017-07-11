@@ -1,0 +1,16 @@
+[paths]
+source =
+   src/homemate_bridge
+   */site-packages/homemate_bridge
+
+[run]
+branch = true
+source =
+    homemate_bridge
+    tests
+parallel = true
+
+[report]
+show_missing = true
+precision = 2
+omit = *migrations*
