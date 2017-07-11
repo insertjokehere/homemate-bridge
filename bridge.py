@@ -5,6 +5,8 @@ import struct
 import binascii
 import random
 import string
+import logging
+import sys
 
 import paho.mqtt.client as mqtt
 
@@ -17,6 +19,8 @@ from cryptography.hazmat.primitives.ciphers import (
     Cipher, algorithms, modes
 )
 from cryptography.hazmat.primitives import padding
+
+logger = logging.getLogger(__name__)
 
 with open("orvibo.key", 'rb') as f:
     orvibo_key = f.read()
@@ -35,6 +39,7 @@ class HomemateSwitch(Switch):
         super().__init__(*args, **kwargs)
 
     def on_state_change(self, new_state):
+        logger.debug("Setting new state: {}".format(new_state))
         self._handler.order_state_change(new_state == self.payload_on)
 
 
@@ -62,7 +67,7 @@ class HomematePacket:
             data_crc = struct.unpack(">I", data[6:10])[0]
             assert self.crc == data_crc
         except AssertionError:
-            print("Bad packet:")
+            logger.error("Bad packet:")
             hexdump(data)
             raise
 
@@ -127,6 +132,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     _broker = None
 
     def __init__(self, *args, **kwargs):
+        logger.debug("New handler")
         self.switch_id = None
         self.keys = {
             0x70: orvibo_key,
@@ -150,7 +156,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     @switch_on.setter
     def switch_on(self, value):
-        print("New switch state: {}".format(value))
+        logger.debug("New switch state: {}".format(value))
         self._switch_on = value
         if self._mqtt_switch is not None:
             self._mqtt_switch.state = self._mqtt_switch.payload_on if value else self._mqtt_switch.payload_off
@@ -183,22 +189,25 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             payload=payload
         )
 
+        logger.debug("Sending state change for {}, new state {}".format(self.switch_id, new_state))
+        logger.debug("Payload: {}".format(payload))
+
         self.request.sendall(packet)
 
     def handle(self):
         # self.request is the TCP socket connected to the client
-        print("Got connection from {}".format(self.client_address[0]))
+        logger.debug("Got connection from {}".format(self.client_address[0]))
         while True:
             data = self.request.recv(1024).strip()
 
             packet = HomematePacket(data, self.keys)
 
-            print("Got payload: {}".format(packet.json_payload))
+            logger.debug("{} sent payload: {}".format(self.switch_id, packet.json_payload))
 
             # Handle the ID field
             if self.switch_id is None and packet.switch_id == ID_UNSET:
                 # Generate a new ID
-                print("Generating a new switch ID")
+                logger.debug("Generating a new switch ID")
                 self.switch_id = ''.join(
                     random.choice(
                         string.ascii_lowercase + string.digits
@@ -206,10 +215,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 ).encode('utf-8')
             elif self.switch_id is None:
                 # Switch has already been assigned an ID, save it
-                print("Reusing existing ID")
+                logger.debug("Reusing existing ID")
                 self.switch_id = packet.switch_id
-
-            print("Switch ID: {}".format(packet.switch_id))
 
             assert 'cmd' in packet.json_payload
             assert 'serial' in packet.json_payload
@@ -223,7 +230,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
             if response is not None:
                 response = self.format_response(packet, response)
-                print("Sending response {}".format(response))
+                logger.debug("Sending response {}".format(response))
                 response_packet = HomematePacket.build_packet(
                     packet_type=packet.packet_type,
                     key=self.keys[packet.packet_type[0]],
@@ -233,9 +240,6 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 # Sanity check: Does our own packet look valid?
                 #HomematePacket(response_packet, self.keys)
                 self.request.sendall(response_packet)
-
-            if packet.json_payload['cmd'] == 32:
-                self.order_state_change(not self.switch_on)
 
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
@@ -277,7 +281,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     def handle_state_update(self, packet):
         if packet.json_payload['statusType'] != 0:
-            print("Got unknown statusType: {}".format(packet.json_payload))
+            logger.warning("Got unknown statusType: {}".format(packet.json_payload))
 
         if packet.json_payload['value1'] == 0:
             self.switch_on = True
@@ -290,7 +294,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self._mqtt_switch = HomemateSwitch(
             self,
             name="Homemate Switch",
-            entity_id=packet.json_payload['uid']
+            entity_id=self.client_address[0]
         )
 
         self._mqtt_switch.connect(self.__class__._broker)
@@ -302,7 +306,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         return {
             0: self.handle_hello,
             32: self.handle_heartbeat,
-            42: self.handle_state_update
+            42: self.handle_state_update,
+            6: self.handle_handshake
         }
 
     @classmethod
@@ -312,6 +317,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 if __name__ == "__main__":
 
     HOST, PORT = "0.0.0.0", 10001
+
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format="%(asctime)s - %(message)s")
 
     mqtt_client = mqtt.Client()
     mqtt_client.connect("localhost", 1883, 60)
@@ -323,9 +330,9 @@ if __name__ == "__main__":
     )
 
     # Create the server, binding to localhost on port 9999
-    server = socketserver.TCPServer((HOST, PORT), HomemateTCPHandler)
+    server = socketserver.ThreadingTCPServer((HOST, PORT), HomemateTCPHandler)
 
-    print(HOST, PORT)
+    logger.debug("Listening on {}, port {}".format(HOST, PORT))
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
