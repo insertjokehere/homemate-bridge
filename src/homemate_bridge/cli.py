@@ -24,9 +24,6 @@ from cryptography.hazmat.primitives import padding
 
 logger = logging.getLogger(__name__)
 
-with open("orvibo.key", 'rb') as f:
-    orvibo_key = f.read()
-
 MAGIC = bytes([0x68, 0x64])
 ID_UNSET = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
@@ -132,13 +129,12 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     """
 
     _broker = None
+    _initial_keys = {}
 
     def __init__(self, *args, **kwargs):
         logger.debug("New handler")
         self.switch_id = None
-        self.keys = {
-            0x70: orvibo_key,
-        }
+        self.keys = dict(self.__class__._initial_keys.items())
 
         self.softwareVersion = None
         self.hardwareVersion = None
@@ -316,15 +312,24 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def set_broker(cls, broker):
         cls._broker = broker
 
+    @classmethod
+    def add_key(cls, key_id, key):
+        cls._initial_keys[key_id] = key
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--homemate-port", type=int, default=10001)
     praser.add_argument("--homemate-interface", default="0.0.0.0")
+    parser.add_argument("--orvibo-key", default=None, required=False)
     SimpleMQTTHost.add_argparse_params(parser)
     args = parser.parse_args()
 
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format="%(asctime)s - %(message)s")
+
+    if args.orvibo_key is not None:
+        with open(args.orvibo_key, 'rb') as f:
+            HomemateTCPHander.add_key(0x70, f.read()[:16])
 
     host = SimpleMQTTHost()
     host.configure_from_env()
