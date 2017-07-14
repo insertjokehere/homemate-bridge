@@ -7,12 +7,14 @@ import random
 import string
 import logging
 import sys
+import argparse
 
 import paho.mqtt.client as mqtt
 
 from hexdump import hexdump
 
 from hassdevice.devices import Switch
+from hassdevice.hosts import SimpleMQTTHost
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
@@ -297,7 +299,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             entity_id=self.client_address[0]
         )
 
-        self._mqtt_switch.connect(self.__class__._broker)
+        self.__class__._broker.add_device(self._mqtt_switch)
 
         return self.handle_default(packet)
 
@@ -316,27 +318,32 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
 if __name__ == "__main__":
 
-    HOST, PORT = "0.0.0.0", 10001
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--homemate-port", type=int, default=10001)
+    praser.add_argument("--homemate-interface", default="0.0.0.0")
+    SimpleMQTTHost.add_argparse_params(parser)
+    args = parser.parse_args()
 
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format="%(asctime)s - %(message)s")
 
-    mqtt_client = mqtt.Client()
-    mqtt_client.connect("localhost", 1883, 60)
+    host = SimpleMQTTHost()
+    host.configure_from_env()
+    host.configure_from_args(args)
 
-    mqtt_client.loop_start()
+    host.start(block=False)
 
     HomemateTCPHandler.set_broker(
-        mqtt_client
+        host
     )
 
     # Create the server, binding to localhost on port 9999
-    server = socketserver.ThreadingTCPServer((HOST, PORT), HomemateTCPHandler)
+    server = socketserver.ThreadingTCPServer((args.homemate_interface, args.homemate_port), HomemateTCPHandler)
 
-    logger.debug("Listening on {}, port {}".format(HOST, PORT))
+    logger.debug("Listening on {}, port {}".format(args.homemate_interface, args.homemate_port))
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
     try:
         server.serve_forever()
     finally:
-        mqtt_client.loop_stop()
+        host.stop()
