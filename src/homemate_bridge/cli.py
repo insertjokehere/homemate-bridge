@@ -286,16 +286,21 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         else:
             self.switch_on = False
 
-        return None  # No response to this packetnaughty_jones
+        if self._mqtt_switch is None:
+            # Setup the mqtt connection once we see this packet
+            # Otherwise, we will get the previous state too early
+            # and the switch will disconnect when we try to update it
+            self._mqtt_switch = HomemateSwitch(
+                self,
+                name="Homemate Switch " + self.client_address[0],
+                entity_id=self.client_address[0].replace('.', '_')
+            )
+
+            self.__class__._broker.add_device(self._mqtt_switch)
+
+        return None  # No response to this packet
 
     def handle_handshake(self, packet):
-        self._mqtt_switch = HomemateSwitch(
-            self,
-            name="Homemate Switch " + self.client_address[0],
-            entity_id=self.client_address[0].replace('.', '_')
-        )
-
-        self.__class__._broker.add_device(self._mqtt_switch)
 
         return self.handle_default(packet)
 
