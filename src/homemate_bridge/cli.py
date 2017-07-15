@@ -160,6 +160,9 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             self._mqtt_switch.state = self._mqtt_switch.payload_on if value else self._mqtt_switch.payload_off
 
     def order_state_change(self, new_state):
+        if self._switch_on is None:
+            return
+
         payload = {
             "userName": "noone@example.com",
             "uid": self.uid,
