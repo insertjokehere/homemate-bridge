@@ -41,6 +41,10 @@ class HomemateSwitch(Switch):
         logger.debug("Setting new state: {}".format(new_state))
         self._handler.order_state_change(new_state == self.payload_on)
 
+    @property
+    def retain(self):
+        return False
+
 
 class HomematePacket:
 
@@ -242,7 +246,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 #HomematePacket(response_packet, self.keys)
                 self.request.sendall(response_packet)
 
-            if self._mqtt_switch is None and packet.json_payload['cmd'] == 42:
+            if self._mqtt_switch is None and packet.json_payload['cmd'] == 32:
                 # Setup the mqtt connection once we see the initial state update
                 # Otherwise, we will get the previous state too early
                 # and the switch will disconnect when we try to update it
