@@ -320,7 +320,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--homemate-port", type=int, default=10001)
-    praser.add_argument("--homemate-interface", default="0.0.0.0")
+    parser.add_argument("--homemate-interface", default="0.0.0.0")
     parser.add_argument("--orvibo-key", default=None, required=False)
     SimpleMQTTHost.add_argparse_params(parser)
     args = parser.parse_args()
@@ -329,7 +329,9 @@ def main():
 
     if args.orvibo_key is not None:
         with open(args.orvibo_key, 'rb') as f:
-            HomemateTCPHander.add_key(0x70, f.read()[:16])
+            HomemateTCPHandler.add_key(0x70, f.read()[:16])
+    else:
+        logger.warning("Orvibo master key file not configured, connections will probably fail!")
 
     host = SimpleMQTTHost()
     host.configure_from_env()
