@@ -251,7 +251,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     def handle_hello(self, packet):
         for f in ['softwareVersion', 'hardwareVersion', 'language', 'modelId']:
-            setattr(self, f, packet.json_payload[f])
+            setattr(self, f, packet.json_payload.get(f, None))
 
         if 0x64 not in self.keys:
             key = ''.join(
