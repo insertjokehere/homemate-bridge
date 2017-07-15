@@ -291,7 +291,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def handle_handshake(self, packet):
         self._mqtt_switch = HomemateSwitch(
             self,
-            name="Homemate Switch",
+            name="Homemate Switch " + self.client_address[0],
             entity_id=self.client_address[0].replace('.', '_')
         )
 
