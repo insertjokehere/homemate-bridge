@@ -292,7 +292,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self._mqtt_switch = HomemateSwitch(
             self,
             name="Homemate Switch",
-            entity_id=self.client_address[0]
+            entity_id=self.client_address[0].replace('.', '_')
         )
 
         self.__class__._broker.add_device(self._mqtt_switch)
