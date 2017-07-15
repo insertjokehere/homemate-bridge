@@ -239,6 +239,18 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 #HomematePacket(response_packet, self.keys)
                 self.request.sendall(response_packet)
 
+            if self._mqtt_switch is None and packet.json_payload['cmd'] == 42:
+                # Setup the mqtt connection once we see the initial state update
+                # Otherwise, we will get the previous state too early
+                # and the switch will disconnect when we try to update it
+                self._mqtt_switch = HomemateSwitch(
+                    self,
+                    name="Homemate Switch " + self.client_address[0],
+                    entity_id=self.client_address[0].replace('.', '_')
+                )
+
+                self.__class__._broker.add_device(self._mqtt_switch)
+
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
         response_payload['serial'] = packet.json_payload['serial']
@@ -285,18 +297,6 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             self.switch_on = True
         else:
             self.switch_on = False
-
-        if self._mqtt_switch is None:
-            # Setup the mqtt connection once we see this packet
-            # Otherwise, we will get the previous state too early
-            # and the switch will disconnect when we try to update it
-            self._mqtt_switch = HomemateSwitch(
-                self,
-                name="Homemate Switch " + self.client_address[0],
-                entity_id=self.client_address[0].replace('.', '_')
-            )
-
-            self.__class__._broker.add_device(self._mqtt_switch)
 
         return None  # No response to this packet
 
