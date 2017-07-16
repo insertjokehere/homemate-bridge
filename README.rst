@@ -80,7 +80,7 @@ Installation
 
 * Obtain the Orvibo 'PK' key (see below), and save it to a file
 * Redirect all traffic for homemate.orvibo.com, TCP port 10001 to the machine running the bridge. The easiest way to do this is to override the DNS record, but how you can do this will greatly depend on how your network is set up
-* `Configure HomeAssistant<https://home-assistant.io/docs/mqtt/discovery/>_` to discover MQTT devices
+* `Configure HomeAssistant <https://home-assistant.io/docs/mqtt/discovery/>_` to discover MQTT devices
 * Install the bridge:
 ::
 
@@ -88,6 +88,7 @@ Installation
 
 * Run the bridge:
 ::
+
    homemate-bridge --orvibo-key <path/to/key/file> --mqtt-host ...
 
 * After ~30 seconds you should see devices connecting to the bridge, and new switch entities in HomeAssistant
