@@ -59,12 +59,38 @@ Orvibo "Homemate" to MQTT bridge
 
 * Free software: Apache Software License 2.0
 
+Supported Devices
+=================
+
+* Orvibo S20c
+
+If you've managed to the bridge working with other devices, please open an issue so I can update the list!
+
+Requirements
+============
+
+* Python 3.x, on Linux
+* The python3-dev, build-essential and libssl-dev packages (for Debian-based systems, or the equivelant)
+* One or more supported switches
+* HomeAssistant
+* An MQTT broker connected to HomeAssistant
+
 Installation
 ============
 
+* Obtain the Orvibo 'PK' key (see below), and save it to a file
+* Redirect all traffic for homemate.orvibo.com, TCP port 10001 to the machine running the bridge. The easiest way to do this is to override the DNS record, but how you can do this will greatly depend on how your network is set up
+* `Configure HomeAssistant<https://home-assistant.io/docs/mqtt/discovery/>_` to discover MQTT devices
+* Install the bridge:
 ::
 
-    pip install homemate-bridge
+   pip install homemate-bridge
+
+* Run the bridge:
+::
+   homemate-bridge --orvibo-key <path/to/key/file> --mqtt-host ...
+
+* After ~30 seconds you should see devices connecting to the bridge, and new switch entities in HomeAssistant
 
 Documentation
 =============
