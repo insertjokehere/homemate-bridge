@@ -93,6 +93,11 @@ Installation
 
 * After ~30 seconds you should see devices connecting to the bridge, and new switch entities in HomeAssistant
 
+Getting the Orvibo 'PK' encryption key
+======================================
+
+As part of the initial handshake with the server, the switch sends a 'hello' packet encrypted with a static key, and expects a packet encrypted with the same key in response that sets a different key for all subsequent packets. This is the 'PK' key, and is not included with the source code until I work out if there would be legal issues with doing so. Fortunately, Orvibo hardcode this key in the source code of the 'Kepler' Android app. You can obtain the key by unzipping the `Kepler apk <http://www.orvibo.com/software/android/kepler.apk>_`, and using the Linux 'strings' utility on the classes.dex file to look for strings that are exactly 16 characters long that appear random, and a mix of upper and lower case letter as well as numbers.
+
 Documentation
 =============
 
