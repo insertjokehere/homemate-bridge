@@ -41,10 +41,6 @@ class HomemateSwitch(Switch):
         logger.debug("Setting new state: {}".format(new_state))
         self._handler.order_state_change(new_state == self.payload_on)
 
-    @property
-    def retain(self):
-        return False
-
 
 class HomematePacket:
 
