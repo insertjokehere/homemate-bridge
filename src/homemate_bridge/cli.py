@@ -153,10 +153,6 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
         super().__init__(*args, **kwargs)
 
-        self.settings = self.__class__._device_settings.get(self.client_address[0], {})
-        if 'name' not in self.settings:
-            self.settings['name'] = "Homemate Switch " + self.client_address[0]
-
     @property
     def switch_on(self):
         return self._switch_on
@@ -207,6 +203,13 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         # self.request is the TCP socket connected to the client
         logger.debug("Got connection from {}".format(self.client_address[0]))
+
+        self.settings = self.__class__._device_settings.get(self.client_address[0], {})
+        if 'name' not in self.settings:
+            self.settings['name'] = "Homemate Switch " + self.client_address[0]
+
+        logger.debug("Device settings: {}".format(self.settings))
+
         while True:
             data = self.request.recv(1024).strip()
 
