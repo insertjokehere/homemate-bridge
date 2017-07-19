@@ -134,6 +134,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     _broker = None
     _initial_keys = {}
+    _device_settings = {}
 
     def __init__(self, *args, **kwargs):
         logger.debug("New handler")
@@ -151,6 +152,10 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self._mqtt_switch = None
 
         super().__init__(*args, **kwargs)
+
+        self.settings = self.__class__._device_settings.get(self.client_address[0], {})
+        if 'name' not in self.settings:
+            self.settings['name'] = "Homemate Switch " + self.client_address[0]
 
     @property
     def switch_on(self):
@@ -252,7 +257,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 # and the switch will disconnect when we try to update it
                 self._mqtt_switch = HomemateSwitch(
                     self,
-                    name="Homemate Switch " + self.client_address[0],
+                    name=self.settings['name'],
                     entity_id=self.client_address[0].replace('.', '_')
                 )
 
@@ -328,12 +333,17 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def add_key(cls, key_id, key):
         cls._initial_keys[key_id] = key
 
+    @classmethod
+    def set_device_settings(cls, settings):
+        cls._device_settings = settings
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--homemate-port", type=int, default=10001)
     parser.add_argument("--homemate-interface", default="0.0.0.0")
     parser.add_argument("--orvibo-key", default=None, required=False)
+    parser.add_argument("--devices-file", default=None, required=False)
     SimpleMQTTHost.add_argparse_params(parser)
     args = parser.parse_args()
 
@@ -344,6 +354,10 @@ def main():
             HomemateTCPHandler.add_key(0x70, f.read()[:16])
     else:
         logger.warning("Orvibo master key file not configured, connections will probably fail!")
+
+    if args.devices_file is not None:
+        with open(args.devices_file, 'r') as f:
+            HomemateTCPHandler.set_device_settings(json.load(f))
 
     host = SimpleMQTTHost()
     host.configure_from_env()
