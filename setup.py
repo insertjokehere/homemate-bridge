@@ -78,6 +78,7 @@ setup(
     entry_points={
         'console_scripts': [
             'homemate-bridge = homemate_bridge.cli:main',
+            'homemate-bridge-seed-keyfile = homemate_bridge.seed_keyfile:main',
         ]
     },
 )

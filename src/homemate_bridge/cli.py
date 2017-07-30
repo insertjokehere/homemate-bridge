@@ -8,6 +8,7 @@ import string
 import logging
 import sys
 import argparse
+import base64
 
 import paho.mqtt.client as mqtt
 
@@ -341,18 +342,20 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--homemate-port", type=int, default=10001)
     parser.add_argument("--homemate-interface", default="0.0.0.0")
-    parser.add_argument("--orvibo-key", default=None, required=False)
+    parser.add_argument("--keys-file", default=None, required=False)
     parser.add_argument("--devices-file", default=None, required=False)
     SimpleMQTTHost.add_argparse_params(parser)
     args = parser.parse_args()
 
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format="%(asctime)s - %(message)s")
 
-    if args.orvibo_key is not None:
-        with open(args.orvibo_key, 'rb') as f:
-            HomemateTCPHandler.add_key(0x70, f.read()[:16])
+    if args.keys_file is not None:
+        with open(args.keys_file, 'r') as f:
+            keys = json.load(f)
+            for k, v in keys.items():
+                HomemateTCPHandler.add_key(k, base64.b64decode(v))
     else:
-        logger.warning("Orvibo master key file not configured, connections will probably fail!")
+        logger.warning("Keys file not configured, connections will probably fail!")
 
     if args.devices_file is not None:
         with open(args.devices_file, 'r') as f:
