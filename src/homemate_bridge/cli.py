@@ -43,6 +43,32 @@ class HomemateSwitch(Switch):
         self._handler.order_state_change(new_state == self.payload_on)
 
 
+class PacketLog:
+
+    log = []
+    logfile = None
+
+    OUT = "out"
+    IN = "in"
+
+    @classmethod
+    def enable(cls, logfile):
+        cls.logfile = logfile
+
+    @classmethod
+    def record(cls, data, direction, keys=None, client=None):
+        if cls.logfile is not None:
+            cls.log.append({
+                'data': base64.b64encode(data).decode('utf-8'),
+                'direction': direction,
+                'keys': keys,
+                'client': client
+            })
+
+            with open(cls.logfile, 'w') as f:
+                json.dump(cls.log, f)
+
+
 class HomematePacket:
 
     def __init__(self, data, keys):
@@ -192,6 +218,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             payload=payload
         )
 
+        PacketLog.record(packet, PacketLog.OUT, self.keys, self.client_address[0])
+
         logger.debug("Sending state change for {}, new state {}".format(self.switch_id, new_state))
         logger.debug("Payload: {}".format(payload))
 
@@ -209,6 +237,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
         while True:
             data = self.request.recv(1024).strip()
+
+            PacketLog.record(data, PacketLog.IN, self.keys, self.client_address[0])
 
             packet = HomematePacket(data, self.keys)
 
@@ -247,6 +277,9 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                     switch_id=self.switch_id,
                     payload=response
                 )
+
+                PacketLog.record(response_packet, PacketLog.OUT, self.keys, self.client_address[0])
+
                 # Sanity check: Does our own packet look valid?
                 #HomematePacket(response_packet, self.keys)
                 self.request.sendall(response_packet)
@@ -344,6 +377,7 @@ def main():
     parser.add_argument("--homemate-interface", default="0.0.0.0")
     parser.add_argument("--keys-file", default=None, required=False)
     parser.add_argument("--devices-file", default=None, required=False)
+    parser.add_argument("--packet-log-file", default=None, required=False, help="Log packets to file")
     SimpleMQTTHost.add_argparse_params(parser)
     args = parser.parse_args()
 
@@ -360,6 +394,9 @@ def main():
     if args.devices_file is not None:
         with open(args.devices_file, 'r') as f:
             HomemateTCPHandler.set_device_settings(json.load(f))
+
+    if args.packet_log_file is not None:
+        PacketLog.enable(args.packet_log_file)
 
     host = SimpleMQTTHost()
     host.configure_from_env()
