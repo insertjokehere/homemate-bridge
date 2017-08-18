@@ -61,7 +61,9 @@ class PacketLog:
             cls.log.append({
                 'data': base64.b64encode(data).decode('utf-8'),
                 'direction': direction,
-                'keys': keys,
+                'keys': {
+                    k: base64.b64encode(v).decode('utf-8') for k, v in keys.items()
+                },
                 'client': client
             })
 
