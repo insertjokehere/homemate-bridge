@@ -389,7 +389,7 @@ def main():
         with open(args.keys_file, 'r') as f:
             keys = json.load(f)
             for k, v in keys.items():
-                HomemateTCPHandler.add_key(k, base64.b64decode(v))
+                HomemateTCPHandler.add_key(int(k), base64.b64decode(v))
     else:
         logger.warning("Keys file not configured, connections will probably fail!")
 
