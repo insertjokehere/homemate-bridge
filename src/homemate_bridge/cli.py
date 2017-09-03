@@ -9,6 +9,7 @@ import logging
 import sys
 import argparse
 import base64
+import os
 
 import paho.mqtt.client as mqtt
 
@@ -393,7 +394,7 @@ def main():
     else:
         logger.warning("Keys file not configured, connections will probably fail!")
 
-    if args.devices_file is not None:
+    if args.devices_file is not None and os.path.exists(args.devices_file):
         with open(args.devices_file, 'r') as f:
             HomemateTCPHandler.set_device_settings(json.load(f))
 
@@ -401,6 +402,7 @@ def main():
         PacketLog.enable(args.packet_log_file)
 
     host = SimpleMQTTHost()
+    host.configure_from_docker_secrets()
     host.configure_from_env()
     host.configure_from_args(args)
 
@@ -410,10 +412,9 @@ def main():
         host
     )
 
-    # Create the server, binding to localhost on port 9999
-    server = socketserver.ThreadingTCPServer((args.homemate_interface, args.homemate_port), HomemateTCPHandler)
-
     logger.debug("Listening on {}, port {}".format(args.homemate_interface, args.homemate_port))
+
+    server = socketserver.ThreadingTCPServer((args.homemate_interface, args.homemate_port), HomemateTCPHandler)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C

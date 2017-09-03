@@ -64,12 +64,7 @@ setup(
     keywords=[
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
-    install_requires=[
-        'paho_mqtt',
-        'cryptography',
-        'hexdump',
-        'hassdevice==0.0.2'
-    ],
+    install_requires=read("requirements.txt").split(),
     extras_require={
         # eg:
         #   'rst': ['docutils>=0.11'],

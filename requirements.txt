@@ -1,0 +1,4 @@
+paho_mqtt
+cryptography
+hexdump
+hassdevice==0.1.0
