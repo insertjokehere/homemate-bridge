@@ -24,7 +24,7 @@ def read(*names, **kwargs):
 
 setup(
     name='homemate-bridge',
-    version='0.1.0',
+    version='0.1.1',
     license='Apache',
     description='Orvibo "Homemate" to MQTT bridge',
     long_description='%s\n%s' % (
