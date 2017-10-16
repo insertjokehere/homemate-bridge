@@ -356,7 +356,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             # Connecting to MQTT
 
             localip = packet.json_payload['localIp']
-            logger.debug("Updating device settings for {}, localIp={}".format(self.switch_id, localip)
+            logger.debug("Updating device settings for {}, localIp={}".format(self.switch_id, localip))
             self.settings = self.__class__._device_settings[localip]
             if 'name' not in self.settings:
                 self.settings['name'] = "Homemate Switch " + localip
