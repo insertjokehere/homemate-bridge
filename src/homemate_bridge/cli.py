@@ -232,6 +232,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         # self.request is the TCP socket connected to the client
         logger.debug("Got connection from {}".format(self.client_address[0]))
 
+        self.entity_id = self.client_address[0].replace('.', '_')
+
         self.settings = self.__class__._device_settings.get(self.client_address[0], {})
         if 'name' not in self.settings:
             self.settings['name'] = "Homemate Switch " + self.client_address[0]
@@ -294,7 +296,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 self._mqtt_switch = HomemateSwitch(
                     self,
                     name=self.settings['name'],
-                    entity_id=self.client_address[0].replace('.', '_')
+                    entity_id=self.entity_id
                 )
 
                 self.__class__._broker.add_device(self._mqtt_switch)
@@ -356,6 +358,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             # Connecting to MQTT
 
             localip = packet.json_payload['localIp']
+            self.entity_id = localip.replace('.', '_')
             logger.debug("Updating device settings for {}, localIp={}".format(self.switch_id, localip))
             self.settings = self.__class__._device_settings[localip]
             if 'name' not in self.settings:
