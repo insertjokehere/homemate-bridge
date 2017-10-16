@@ -349,6 +349,19 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         return None  # No response to this packet
 
     def handle_handshake(self, packet):
+        if 'localIp' in packet.json_payload and packet.json_payload['localIp'] in self.__class__._device_settings:
+            # By default, we try to use the source IP of the socket as a stable identifier when connecting to HA
+            # This may not always be the right thing to do (ie, if there is NAT involved, like when running in docker)
+            # Fortunately, the switch sends the localIP in cmd 6, which happens before the cmd 32 wait for before
+            # Connecting to MQTT
+
+            localip = packet.json_payload['localIp']
+            logger.debug("Updating device settings for {}, localIp={}".format(self.switch_id, localip)
+            self.settings = self.__class__._device_settings[localip]
+            if 'name' not in self.settings:
+                self.settings['name'] = "Homemate Switch " + localip
+
+            logger.debug("Device settings: {}".format(self.settings))
 
         return self.handle_default(packet)
 
