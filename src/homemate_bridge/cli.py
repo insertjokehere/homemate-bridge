@@ -422,6 +422,14 @@ def main():
     host.configure_from_env()
     host.configure_from_args(args)
 
+    logger.debug("Host config: {}".format(
+        str(
+            {
+                k: getattr(host, k) for k in host.CONFIGURABLE_OPTIONS
+            }
+        )
+    ))
+
     host.start(block=False)
 
     HomemateTCPHandler.set_broker(
