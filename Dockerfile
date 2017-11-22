@@ -10,6 +10,11 @@ COPY . /src
 
 RUN python setup.py install
 
-ENTRYPOINT ["/src/bin/entrypoint.sh"]
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
+CMD ["/src/bin/entrypoint.sh"]
 
 VOLUME /config
