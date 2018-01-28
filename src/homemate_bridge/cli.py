@@ -229,6 +229,10 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self.request.sendall(packet)
 
     def handle(self):
+        # Close the connection if the switch doesn't send anything in 30 minutes
+        # See !1
+        self.request.settimeout(60 * 30)
+
         # self.request is the TCP socket connected to the client
         logger.debug("Got connection from {}".format(self.client_address[0]))
 
