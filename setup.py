@@ -22,6 +22,13 @@ def read(*names, **kwargs):
     ).read()
 
 
+install_requires = []
+for req in read("requirements.txt").split('\n'):
+    if req.startswith("-e"):
+        req = req.split("=")[1]
+    install_requires.append(req)
+
+
 setup(
     name='homemate-bridge',
     version='0.1.1',
@@ -64,7 +71,7 @@ setup(
     keywords=[
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
-    install_requires=read("requirements.txt").split(),
+    install_requires=install_requires,
     extras_require={
         # eg:
         #   'rst': ['docutils>=0.11'],
