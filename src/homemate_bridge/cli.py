@@ -15,7 +15,7 @@ import paho.mqtt.client as mqtt
 
 from hexdump import hexdump
 
-from hassdevice.devices import Switch
+from hassdevice.devices import Switch, Light
 from hassdevice.hosts import SimpleMQTTHost
 
 from cryptography.hazmat.backends import default_backend
@@ -34,6 +34,17 @@ CMD_SERVER_SENDS = [15]
 
 
 class HomemateSwitch(Switch):
+
+    def __init__(self, handler, *args, **kwargs):
+        self._handler = handler
+        super().__init__(*args, **kwargs)
+
+    def on_state_change(self, new_state):
+        logger.debug("Setting new state: {}".format(new_state))
+        self._handler.order_state_change(new_state == self.payload_on)
+
+
+class HomemateLight(Light):
 
     def __init__(self, handler, *args, **kwargs):
         self._handler = handler
@@ -297,13 +308,20 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 # Setup the mqtt connection once we see the initial state update
                 # Otherwise, we will get the previous state too early
                 # and the switch will disconnect when we try to update it
-                self._mqtt_switch = HomemateSwitch(
+                self._mqtt_switch = self._hass_device_class()(
                     self,
                     name=self.settings['name'],
                     entity_id=self.entity_id
                 )
 
                 self.__class__._broker.add_device(self._mqtt_switch)
+
+    def _hass_device_class(self):
+        device_type = self.settings.get('device_type', 'switch')
+        return {
+            'switch': HomemateSwitch,
+            'light': HomemateLight
+        }[device_type]
 
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
