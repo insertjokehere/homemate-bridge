@@ -23,10 +23,11 @@ def read(*names, **kwargs):
 
 
 install_requires = []
-for req in read("requirements.txt").split('\n'):
+for req in read("requirements.txt").split('\n')[:-2]:
     if req.startswith("-e"):
         req = req.split("=")[1]
     install_requires.append(req)
+install_requires.append('hassdevice')
 
 
 setup(

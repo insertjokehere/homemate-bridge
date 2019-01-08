@@ -1,4 +1,4 @@
 paho_mqtt
 cryptography >= 2.3
 hexdump
-hassdevice==0.1.4
+git+https://github.com/insertjokehere/python-hassdevice.git@21e24b88b8e709424927db798dad4b7379556cbe#egg=hassdevice
