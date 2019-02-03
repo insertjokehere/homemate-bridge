@@ -15,7 +15,7 @@ import paho.mqtt.client as mqtt
 
 from hexdump import hexdump
 
-from hassdevice.devices import Switch
+from hassdevice.devices import Switch, Sensor
 from hassdevice.hosts import SimpleMQTTHost
 
 from cryptography.hazmat.backends import default_backend
@@ -42,6 +42,16 @@ class HomemateSwitch(Switch):
     def on_state_change(self, new_state):
         logger.debug("Setting new state: {}".format(new_state))
         self._handler.order_state_change(new_state == self.payload_on)
+
+class HomematePowerSensor(Sensor):
+    def __init__(self, handler, *args, **kwargs):
+        self._handler = handler
+        super().__init__(*args, **kwargs)
+
+    def on_energy_usage_change(self, energy_reading):
+        logger.debug("Setting new power output: {}".format(energy_reading))
+        self.payload_energy_update(energy_reading)
+
 
 
 class PacketLog:
@@ -176,6 +186,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self.uid = None
 
         self._mqtt_switch = None
+        self._mqtt_sensor = None
 
         super().__init__(*args, **kwargs)
 
@@ -229,14 +240,8 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self.request.sendall(packet)
 
     def handle(self):
-        # Close the connection if the switch doesn't send anything in 30 minutes
-        # See !1
-        self.request.settimeout(60 * 30)
-
         # self.request is the TCP socket connected to the client
         logger.debug("Got connection from {}".format(self.client_address[0]))
-
-        self.entity_id = self.client_address[0].replace('.', '_')
 
         self.settings = self.__class__._device_settings.get(self.client_address[0], {})
         if 'name' not in self.settings:
@@ -300,16 +305,19 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 self._mqtt_switch = HomemateSwitch(
                     self,
                     name=self.settings['name'],
-                    entity_id=self.entity_id
+                    entity_id=self.client_address[0].replace('.', '_')
                 )
-
                 self.__class__._broker.add_device(self._mqtt_switch)
 
+
+                
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
         response_payload['serial'] = packet.json_payload['serial']
         response_payload['status'] = 0
 
+        # if 'energy' in packet.json_payload:        
+        #response_payload['energy'] = packet.json_payload['energy']
         if 'uid' in packet.json_payload:
             response_payload['uid'] = packet.json_payload['uid']
 
@@ -355,31 +363,30 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         return None  # No response to this packet
 
     def handle_handshake(self, packet):
-        if 'localIp' in packet.json_payload and packet.json_payload['localIp'] in self.__class__._device_settings:
-            # By default, we try to use the source IP of the socket as a stable identifier when connecting to HA
-            # This may not always be the right thing to do (ie, if there is NAT involved, like when running in docker)
-            # Fortunately, the switch sends the localIP in cmd 6, which happens before the cmd 32 wait for before
-            # Connecting to MQTT
-
-            localip = packet.json_payload['localIp']
-            self.entity_id = localip.replace('.', '_')
-            logger.debug("Updating device settings for {}, localIp={}".format(self.switch_id, localip))
-            self.settings = self.__class__._device_settings[localip]
-            if 'name' not in self.settings:
-                self.settings['name'] = "Homemate Switch " + localip
-
-            logger.debug("Device settings: {}".format(self.settings))
 
         return self.handle_default(packet)
 
+    def handle_energy_update(self, packet):
+        if 'energy' in packet.json_payload:
+            self.energy = packet.json_payload['energy']
+            logger.debug("Got new energy reading: {}".format(self.energy))
+            if self._mqtt_sensor is None:
+                self._mqtt_sensor = HomematePowerSensor(self,
+                    name=self.settings['name'],
+                    entity_id=self.client_address[0].replace('.', '_')
+                )
+                self.__class__._broker.add_device(self._mqtt_sensor)
+            
+            self._mqtt_sensor.on_energy_usage_change(self.energy)
+            
     @property
     def cmd_handlers(self):
         return {
             0: self.handle_hello,
             32: self.handle_heartbeat,
             42: self.handle_state_update,
-            6: self.handle_handshake
-        }
+            127: self.handle_energy_update,
+            }
 
     @classmethod
     def set_broker(cls, broker):
@@ -425,14 +432,6 @@ def main():
     host.configure_from_docker_secrets()
     host.configure_from_env()
     host.configure_from_args(args)
-
-    logger.debug("Host config: {}".format(
-        str(
-            {
-                k: getattr(host, k) for k in host.CONFIGURABLE_OPTIONS
-            }
-        )
-    ))
 
     host.start(block=False)
 
