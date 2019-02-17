@@ -1,17 +1,18 @@
 import yaml
 import json
+import base64
 import collections
 import yamlordereddictloader
 import binascii
 import struct
 import sys
 
-with open("orvibo.key", 'rb') as f:
-    orvibo_key = f.read()
 
-keys = {
-    0x70: orvibo_key,
-}
+keys = "keys.json"
+with open(keys, 'r') as f:
+    keys = {
+        int(k): base64.b64decode(v) for k, v in json.load(f)
+    }
 
 
 def load_packet(data):
