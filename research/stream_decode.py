@@ -11,7 +11,7 @@ import sys
 keys = "keys.json"
 with open(keys, 'r') as f:
     keys = {
-        int(k): base64.b64decode(v) for k, v in json.load(f)
+        int(k): base64.b64decode(v) for k, v in json.load(f).items()
     }
 
 
