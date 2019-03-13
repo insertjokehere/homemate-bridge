@@ -107,7 +107,7 @@ class HomematePacket:
             assert self.crc == data_crc
         except AssertionError:
             logger.error("Bad packet:")
-            hexdump(data)
+            #hexdump(data)
             raise
 
         self.switch_id = data[10:42]
@@ -242,6 +242,9 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         # Close the connection if the switch doesn't send anything in 30 minutes
         # See !1
+        
+
+
         self.request.settimeout(60 * 30)
         # self.request is the TCP socket connected to the client
         logger.debug("Got connection from {}".format(self.client_address[0]))
@@ -311,8 +314,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                     entity_id=self.client_address[0].replace('.', '_')
                 )
                 self.__class__._broker.add_device(self._mqtt_switch)
-
-
+            
                 
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
@@ -348,6 +350,9 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     def handle_heartbeat(self, packet):
         self.uid = packet.json_payload['uid']
+        logger.warning("HEARTBEAT")
+        self.handle_energy_update
+
         return {
             'utc': int(time.time())
         }
@@ -381,15 +386,6 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         return self.handle_default(packet)
 
     def handle_energy_update(self, packet):
-        # if 'energy' in packet.json_payload:
-        #     self.energy = packet.json_payload['energy']
-        #     logger.debug("Got new energy reading: {}".format(self.energy))
-        #     if self._mqtt_sensor is None:
-        #         self._mqtt_sensor = HomematePowerSensor(self,
-        #             name=self.settings['name'],
-        #             entity_id=self.client_address[0].replace('.', '_')
-        #         )
-
         payload = {
             "userName": "noone@example.com",
             "uid": self.uid,
@@ -414,7 +410,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             switch_id=self.switch_id,
             payload=payload
         )
-        
+
         PacketLog.record(packet, PacketLog.OUT, self.keys, self.client_address[0])
         logger.debug("ASKING FOR POWER INFO!")
 
