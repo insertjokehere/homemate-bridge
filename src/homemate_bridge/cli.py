@@ -350,7 +350,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     def handle_heartbeat(self, packet):
         self.uid = packet.json_payload['uid']
-        logger.debug("HEARTBEAT")
+        logger.warning("HEARTBEAT")
         self.handle_energy_update
 
         return {
