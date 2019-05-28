@@ -63,6 +63,7 @@ Supported Devices
 =================
 
 * Orvibo S20c
+* Zettaguard (Orbivo) S31
 
 If you've managed to the bridge working with other devices, please open an issue so I can update the list!
 
