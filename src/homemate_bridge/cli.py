@@ -15,7 +15,7 @@ import paho.mqtt.client as mqtt
 
 from hexdump import hexdump
 
-from hassdevice.devices import Switch, Sensor
+from hassdevice.devices import Switch
 from hassdevice.hosts import SimpleMQTTHost
 
 from cryptography.hazmat.backends import default_backend
@@ -24,9 +24,7 @@ from cryptography.hazmat.primitives.ciphers import (
 )
 from cryptography.hazmat.primitives import padding
 
-#logger = logging.getLogger(__name__)
-logger = logging.getLogger()
-
+logger = logging.getLogger(__name__)
 
 MAGIC = bytes([0x68, 0x64])
 ID_UNSET = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -44,16 +42,6 @@ class HomemateSwitch(Switch):
     def on_state_change(self, new_state):
         logger.debug("Setting new state: {}".format(new_state))
         self._handler.order_state_change(new_state == self.payload_on)
-
-class HomematePowerSensor(Sensor):
-    def __init__(self, handler, *args, **kwargs):
-        self._handler = handler
-        super().__init__(*args, **kwargs)
-
-    def on_energy_usage_change(self, energy_reading):
-        logger.debug("Setting new power output: {}".format(energy_reading))
-        self.payload_energy_update(energy_reading)
-
 
 
 class PacketLog:
@@ -109,7 +97,7 @@ class HomematePacket:
             assert self.crc == data_crc
         except AssertionError:
             logger.error("Bad packet:")
-            # hexdump(data)
+            hexdump(data)
             raise
 
         self.switch_id = data[10:42]
@@ -188,7 +176,6 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
         self.uid = None
 
         self._mqtt_switch = None
-        self._mqtt_sensor = None
 
         super().__init__(*args, **kwargs)
 
@@ -238,20 +225,18 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
         logger.debug("Sending state change for {}, new state {}".format(self.switch_id, new_state))
         logger.debug("Payload: {}".format(payload))
+
         self.request.sendall(packet)
-
-
-        
 
     def handle(self):
         # Close the connection if the switch doesn't send anything in 30 minutes
         # See !1
-        
-
-
         self.request.settimeout(60 * 30)
+
         # self.request is the TCP socket connected to the client
         logger.debug("Got connection from {}".format(self.client_address[0]))
+
+        self.entity_id = self.client_address[0].replace('.', '_')
 
         self.settings = self.__class__._device_settings.get(self.client_address[0], {})
         if 'name' not in self.settings:
@@ -315,11 +300,11 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 self._mqtt_switch = HomemateSwitch(
                     self,
                     name=self.settings['name'],
-                    entity_id=self.client_address[0].replace('.', '_')
+                    entity_id=self.entity_id
                 )
+
                 self.__class__._broker.add_device(self._mqtt_switch)
-            
-                
+
     def format_response(self, packet, response_payload):
         response_payload['cmd'] = packet.json_payload['cmd']
         response_payload['serial'] = packet.json_payload['serial']
@@ -354,9 +339,6 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
     def handle_heartbeat(self, packet):
         self.uid = packet.json_payload['uid']
-        logger.warning("HEARTBEAT")
-        self.handle_energy_update
-
         return {
             'utc': int(time.time())
         }
@@ -387,66 +369,17 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
                 self.settings['name'] = "Homemate Switch " + localip
 
             logger.debug("Device settings: {}".format(self.settings))
+
         return self.handle_default(packet)
 
-    def handle_energy_update(self,reading):
-        payload = {
-            "userName": "noone@example.com",
-            "uid": self.uid,
-            "value1": 0 if self.switch_on else 1,
-            "value2": 0,
-            "value3": 0,
-            "value4": 0,
-            "defaultResponse": 1,
-            "ver": "2.4.0",
-            "qualityOfService": 1,
-            "delayTime": 0,
-            "cmd": 128,
-            "deviceId": self.switch_id.decode("utf-8"),
-            "clientSessionId": self.switch_id.decode("utf-8"),
-            "serial": self.serial
-            }
-
-        self.serial += 1
-        packet = HomematePacket.build_packet(
-            packet_type=bytes([0x64, 0x6b]),
-            key=self.keys[0x64],
-            switch_id=self.switch_id,
-            payload=payload
-        )
-
-        PacketLog.record(packet, PacketLog.OUT, self.keys, self.client_address[0])
-        logger.debug("ASKING FOR POWER INFO!")
-
-        logger.debug("Payload: {}".format(payload))
-
-        self.request.sendall(packet)
-
-    def handle_energy_reading(self, packet):        
-    
-            if 'power' in packet.json_payload:
-                self.power = abs(float(packet.json_payload['power']))
-                logger.debug("Got new power reading: {}".format(self.power))
-                if self._mqtt_sensor is None:
-                    self._mqtt_sensor = HomematePowerSensor(self,
-                        name=self.settings['name'],
-                        entity_id=self.client_address[0].replace('.', '_')
-                    )
-                self.__class__._broker.add_device(self._mqtt_sensor)
-
-
-            self._mqtt_sensor.on_energy_usage_change(self.power)
-            
     @property
     def cmd_handlers(self):
         return {
             0: self.handle_hello,
             32: self.handle_heartbeat,
             42: self.handle_state_update,
-            6: self.handle_handshake,
-            127: self.handle_energy_update,
-            128: self.handle_energy_reading,
-            }
+            6: self.handle_handshake
+        }
 
     @classmethod
     def set_broker(cls, broker):
@@ -492,6 +425,14 @@ def main():
     host.configure_from_docker_secrets()
     host.configure_from_env()
     host.configure_from_args(args)
+
+    logger.debug("Host config: {}".format(
+        str(
+            {
+                k: getattr(host, k) for k in host.CONFIGURABLE_OPTIONS
+            }
+        )
+    ))
 
     host.start(block=False)
 
