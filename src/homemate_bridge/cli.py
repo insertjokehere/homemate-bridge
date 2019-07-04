@@ -24,7 +24,9 @@ from cryptography.hazmat.primitives.ciphers import (
 )
 from cryptography.hazmat.primitives import padding
 
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
+logger = logging.getLogger()
+
 
 MAGIC = bytes([0x68, 0x64])
 ID_UNSET = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -107,7 +109,7 @@ class HomematePacket:
             assert self.crc == data_crc
         except AssertionError:
             logger.error("Bad packet:")
-            #hexdump(data)
+            # hexdump(data)
             raise
 
         self.switch_id = data[10:42]
@@ -236,8 +238,10 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
 
         logger.debug("Sending state change for {}, new state {}".format(self.switch_id, new_state))
         logger.debug("Payload: {}".format(payload))
-
         self.request.sendall(packet)
+
+
+        
 
     def handle(self):
         # Close the connection if the switch doesn't send anything in 30 minutes
@@ -385,7 +389,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
             logger.debug("Device settings: {}".format(self.settings))
         return self.handle_default(packet)
 
-    def handle_energy_update(self):
+    def handle_energy_update(self,reading):
         payload = {
             "userName": "noone@example.com",
             "uid": self.uid,
@@ -421,7 +425,7 @@ class HomemateTCPHandler(socketserver.BaseRequestHandler):
     def handle_energy_reading(self, packet):        
     
             if 'power' in packet.json_payload:
-                self.power = packet.json_payload['power']
+                self.power = abs(float(packet.json_payload['power']))
                 logger.debug("Got new power reading: {}".format(self.power))
                 if self._mqtt_sensor is None:
                     self._mqtt_sensor = HomematePowerSensor(self,
